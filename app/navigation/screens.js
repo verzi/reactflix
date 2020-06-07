@@ -4,8 +4,7 @@ import MovieDetails from '../screens/MovieDetails';
 import Search from '../screens/Search';
 import MovieVideo from '../screens/MovieVideo';
 
-import { ROUTES } from './routes';
-import { TABS } from './routes';
+import { ROUTES, TABS } from './routes';
 
 export const MoviesScreen = {
   [ROUTES.MOVIE_LIST]: {
@@ -44,7 +43,7 @@ export const ConfigurationScreen = {
   [ROUTES.CONFIGURATION]: {
     screen: Configuration,
     navigationOptions: {
-      title: TABS.SEARCH
+      title: TABS.CONFIG
     }
   }
 };
