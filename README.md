@@ -5,7 +5,7 @@
 
 ---
 
-Aplicación para consultar series y películas desarrollada en React Native, haciendo uso de la api provista por The Movie Database (TMDb). Además, esta aplicación requiere de ![reactflix-backend](https://github.com/verzi/reactflix-backend), un backend desarrollado utilizando Node.js, Express.js y MongoDB Atlas.
+Aplicación para consultar series y películas desarrollada en React Native, haciendo uso de la api provista por The Movie Database (TMDb). Además, esta aplicación requiere de [reactflix-backend](https://github.com/verzi/reactflix-backend), un backend desarrollado utilizando Node.js, Express.js y MongoDB Atlas.
 
 ![Reactflix: Guía de series y películas](./resources/demo.png)
 
