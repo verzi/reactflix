@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Reactflix",
+    "slug": "reactflix",
+    "description": "Reactflix - MRI Aplicaciones Distribuídas",
+    "version": "1.0.0",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": ["ios", "android"],
+    "orientation": "portrait",
+    "icon": "./app/assets/images/icon.png",
+    "splash": {
+      "image": "./app/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false
+    },
+    "githubUrl": "https://github.com/verzi/reactflix"
+  }
+}
