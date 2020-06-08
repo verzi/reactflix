@@ -23,7 +23,17 @@ const MoviesStack = createStackNavigator(MoviesScreen, {
   defaultNavigationOptions,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
-      <Feather name="home" size={20} color={tintColor} />
+      <Feather name="film" size={20} color={tintColor} />
+    )
+  }
+});
+
+const UserMovieListStack = createStackNavigator(MoviesScreen, {
+  initialRouteName: ROUTES.MOVIE_LIST,
+  defaultNavigationOptions,
+  navigationOptions: {
+    tabBarIcon: ({ tintColor }) => (
+      <Feather name="list" size={20} color={tintColor} />
     )
   }
 });
@@ -38,15 +48,25 @@ const SearchStack = createStackNavigator(SearchScreen, {
   }
 });
 
-const ConfigurationStack = createStackNavigator(ConfigurationScreen, {
+const UserAccountStack = createStackNavigator(ConfigurationScreen, {
   initialRouteName: ROUTES.CONFIGURATION,
   defaultNavigationOptions,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
-      <Feather name="menu" size={20} color={tintColor} />
+      <Feather name="user" size={20} color={tintColor} />
     )
   }
 });
+
+// const ConfigurationStack = createStackNavigator(ConfigurationScreen, {
+//   initialRouteName: ROUTES.CONFIGURATION,
+//   defaultNavigationOptions,
+//   navigationOptions: {
+//     tabBarIcon: ({ tintColor }) => (
+//       <Feather name="user" size={20} color={tintColor} />
+//     )
+//   }
+// });
 
 const MovieListTabBarVisible = navigation => {
   const { routes } = navigation.state;
@@ -78,9 +98,21 @@ const tabNavigatorDefault = {
       tabBarVisible: MovieListTabBarVisible(navigation)
     })
   },
-  [TABS.CONFIG]: {
-    screen: ConfigurationStack
-  }
+  [TABS.USER_MOVIE_LIST]: {
+    screen: UserMovieListStack,
+    navigationOptions: ({ navigation }) => ({
+      tabBarVisible: MovieListTabBarVisible(navigation)
+    })
+  },
+  [TABS.USER_PROFILE]: {
+    screen: UserAccountStack,
+    navigationOptions: ({ navigation }) => ({
+      tabBarVisible: MovieListTabBarVisible(navigation)
+    })
+  } // ,
+  // [TABS.CONFIG]: {
+  //   screen: ConfigurationStack
+  // }
 };
 
 const MainNavigator =

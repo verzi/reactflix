@@ -4,11 +4,14 @@ export const ROUTES = {
   MOVIE_VIDEO: 'MovieVideo',
   SEARCH: 'Search',
   SEARCH_RESULTS: 'SearchResults',
-  CONFIGURATION: 'Configuration'
+  CONFIGURATION: 'Configuration',
+  USER_MOVIE_LIST: 'UserMovieList'
 };
 
 export const TABS = {
-  HOME: 'Inicio',
+  HOME: 'Películas',
   SEARCH: 'Buscar',
+  USER_MOVIE_LIST: 'Listas',
+  USER_PROFILE: 'Perfil',
   CONFIG: 'Más'
 };

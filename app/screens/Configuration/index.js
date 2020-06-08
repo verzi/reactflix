@@ -36,7 +36,8 @@ const Configuration = () => {
   showError = () => {
     Alert({
       title: 'Atención',
-      description: 'Ups!, ha ocurrido un problema, por favor intenta nuevamente más tarde.'
+      description:
+        'Ups!, ha ocurrido un problema, por favor intenta nuevamente más tarde.'
     });
   };
 
@@ -61,8 +62,7 @@ const Configuration = () => {
   handleRating = () => {
     Alert({
       title: 'Atención',
-      description:
-        '¿Te gustó, no?… mínimo nos merecemos un 10 :)'
+      description: '¿Te gustó, no?… mínimo nos merecemos un 10 :)'
     });
   };
 
@@ -92,7 +92,7 @@ const Configuration = () => {
               style={[styles.itemText, styles.sectionText]}
               numberOfLines={2}
             >
-              Application
+              Acerca de Reactflix
             </Text>
             <TouchableOpacity onPress={handleShare}>
               <View style={styles.item}>
