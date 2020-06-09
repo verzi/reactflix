@@ -3,6 +3,7 @@ import Configuration from '../screens/Configuration';
 import MovieDetails from '../screens/MovieDetails';
 import Search from '../screens/Search';
 import MovieVideo from '../screens/MovieVideo';
+import UserMovieList from '../screens/UserMovieList';
 
 import { ROUTES, TABS } from './routes';
 
@@ -44,6 +45,15 @@ export const ConfigurationScreen = {
     screen: Configuration,
     navigationOptions: {
       title: TABS.CONFIG
+    }
+  }
+};
+
+export const UserMovieListScreen = {
+  [ROUTES.USER_MOVIE_LIST]: {
+    screen: UserMovieList,
+    navigationOptions: {
+      title: TABS.USER_MOVIE_LIST
     }
   }
 };

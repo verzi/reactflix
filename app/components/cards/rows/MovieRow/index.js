@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import Image from 'react-native-scalable-image';
 
 import { TouchableOpacity } from '../../../common/TouchableOpacity';
+import { Alert } from '../../../common/Alert';
 
 import { width } from '../../../../utils/dimensions';
 import { getImageApi } from '../../../../utils/images';
@@ -42,6 +43,13 @@ const renderScore = voteAverage => {
   );
 };
 
+const onLongPressMovieCover = () => {
+  Alert({
+    title: 'TODO',
+    description: 'Mostrar el modal para agregar pelicula a una lista'
+  });
+};
+
 const MovieRow = memo(
   ({ numColumns, item, type, isSearch, navigate }) => (
     <>
@@ -50,6 +58,7 @@ const MovieRow = memo(
           onPress={() =>
             navigate(ROUTES.MOVIE_DETAILS, { id: item.id, title: item.title })
           }
+          onLongPress={() => onLongPressMovieCover()}
         >
           <View style={styles.containerItem}>
             <Image

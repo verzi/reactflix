@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     color: blue
   },
   score: {
-    minWidth: '25%',
-    paddingVertical: 2,
-    paddingHorizontal: 4,
+    minWidth: '13%',
+    paddingVertical: 1,
+    paddingHorizontal: 2,
     borderRadius: 100
   },
   low: {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: lightGreen
   },
   textPercent: {
-    fontSize: fontSizeResponsive(2.1),
+    fontSize: fontSizeResponsive(1.5),
     fontWeight: '500',
     color: white,
     textAlign: 'center'

@@ -5,7 +5,8 @@ export const ROUTES = {
   SEARCH: 'Search',
   SEARCH_RESULTS: 'SearchResults',
   CONFIGURATION: 'Configuration',
-  USER_MOVIE_LIST: 'UserMovieList'
+  USER_MOVIE_LIST: 'UserMovieList',
+  SIGNUP: 'SignUp'
 };
 
 export const TABS = {
@@ -13,5 +14,6 @@ export const TABS = {
   SEARCH: 'Buscar',
   USER_MOVIE_LIST: 'Listas',
   USER_PROFILE: 'Perfil',
-  CONFIG: 'Más'
+  CONFIG: 'Más',
+  SIGNUP: 'Sign Up'
 };

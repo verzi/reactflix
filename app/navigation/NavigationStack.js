@@ -6,7 +6,12 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
-import { MoviesScreen, SearchScreen, ConfigurationScreen } from './screens';
+import {
+  MoviesScreen,
+  SearchScreen,
+  ConfigurationScreen,
+  UserMovieListScreen
+} from './screens';
 import { ROUTES, TABS } from './routes';
 
 import { darkBlue, white, pink, blue } from '../utils/colors';
@@ -28,8 +33,8 @@ const MoviesStack = createStackNavigator(MoviesScreen, {
   }
 });
 
-const UserMovieListStack = createStackNavigator(MoviesScreen, {
-  initialRouteName: ROUTES.MOVIE_LIST,
+const UserMovieListStack = createStackNavigator(UserMovieListScreen, {
+  initialRouteName: ROUTES.USER_MOVIE_LIST,
   defaultNavigationOptions,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
