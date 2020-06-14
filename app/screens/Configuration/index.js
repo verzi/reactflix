@@ -75,7 +75,7 @@ const Configuration = () => {
               style={[styles.itemText, styles.sectionText]}
               numberOfLines={2}
             >
-              Interface
+              Configuración
             </Text>
             <View style={[styles.item, styles.itemNoBorder]}>
               <Text style={styles.itemText} numberOfLines={2}>
