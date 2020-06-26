@@ -107,7 +107,7 @@ const FilterModal = ({ isVisible, filter, onVisible, onFilter, style }) => {
             onPress={() => onFilter(type, name, false)}
           >
             <Text style={[styles.buttonText, styles.buttonTextSave]}>
-              Confirmar
+              Aplicar
             </Text>
           </TouchableOpacity>
         </View>
