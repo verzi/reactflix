@@ -1,131 +1,168 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import Constants from 'expo-constants';
-import { Feather } from '@expo/vector-icons';
-
-import { Alert } from '../../components/common/Alert';
-import { Share } from '../../components/common/Share';
+import { ScrollView, View, Text, TextInput } from 'react-native';
 import Screen from '../../components/common/Screen';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
 import { Switch } from '../../components/common/Switch';
 
-import { getItem, setItem } from '../../utils/asyncStorage';
-
-import { darkBlue } from '../../utils/colors';
+import Spinner from '../../components/common/Spinner';
+import NotificationCard from '../../components/cards/NotificationCard';
+import request from '../../services/apiBackend';
 
 import styles from './styles';
 
+
+import useUser from "../../hooks/useUser";
+
 const Configuration = () => {
-  const [hasAdultContent, setHasAdultContent] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const adultContentStorage = await getItem(
-          '@ConfigKey',
-          'hasAdultContent'
-        );
+  const { user, updateUser } = useUser();
 
-        setHasAdultContent(adultContentStorage);
-      } catch (error) {
-        showError();
-      }
-    })();
-  }, [hasAdultContent]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  showError = () => {
-    Alert({
-      title: 'Atención',
-      description:
-        'Ups!, ha ocurrido un problema, por favor intenta nuevamente más tarde.'
-    });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState(false);
+
+  onChangeUsername = value => {
+    setUsername(value);
   };
 
-  handleChangeAdultContent = async value => {
-    try {
-      setHasAdultContent(value);
-      await setItem('@ConfigKey', `{"hasAdultContent": ${value}}`);
-    } catch (error) {
-      showError();
+  onChangePassword = value => {
+    setPassword(value);
+  };
+
+  const onReset = () => {
+    setUsername('');
+    setPassword('');
+    setIsLoading('');
+    setIsError('');
+  };
+
+  handleSubmit = async () => {
+    if (username && password) {
+      try {
+        setIsLoading(true);
+        const data = await request(`users/login`, {
+          username,
+          password
+        }, "POST");
+        setIsLoading(false);
+        setIsError(false);
+        if (data.error) {
+          setIsError(true);
+          setError("Los datos ingresados son incorrectos");
+        } else {
+          updateUser(data);
+        }
+        console.log(user);
+        console.log(data)
+
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        setIsError(true);
+      }
     }
   };
 
-  handleShare = () => {
-    Share({
-      message: 'Más información sobre películas y series \u{1F37F}',
-      url: 'https://www.themoviedb.org/',
-      title: 'Reactflix',
-      dialogTitle: 'Más información sobre películas y series \u{1F37F}'
-    });
-  };
+  if (user)
+    return (
+      <Screen>
+        <ScrollView style={styles.bgWhite}>
+          <View style={styles.container}>
+            {isLoading ? (
+              <Spinner style={styles.containerCenter} />
+            ) : isError ? (
+              <ScrollView style={styles.containerScroll}>
+                <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => onReset()} />
+              </ScrollView>
+            ) : (
+              <ScrollView style={styles.containerScroll}>
+                <View style={styles.section}>
+                  <Text>Hola {user.userProfile.firstname}, estos son tus datos.</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Usuario"
+                    placeholderTextColor="#828282"
+                    returnKeyType="next"
+                    onChangeText={value => onChangeUsername(value)}
+                    value={username}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Contraseña"
+                    placeholderTextColor="#828282"
+                    returnKeyType="done"
+                    textContentType="newPassword"
+                    secureTextEntry
+                    onChangeText={value => onChangePassword(value)}
+                    value={password}
+                  />
+                </View>
 
-  handleRating = () => {
-    Alert({
-      title: 'Atención',
-      description: '¿Te gustó, no?… mínimo nos merecemos un 10 :)'
-    });
-  };
-
+                <View style={styles.containerButton}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                      Confirmar
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+                )}
+          </View>
+        </ScrollView>
+      </Screen>
+    );
   return (
     <Screen>
       <ScrollView style={styles.bgWhite}>
         <View style={styles.container}>
-          <View style={styles.section}>
-            <Text
-              style={[styles.itemText, styles.sectionText]}
-              numberOfLines={2}
-            >
-              Interface
-            </Text>
-            <View style={[styles.item, styles.itemNoBorder]}>
-              <Text style={styles.itemText} numberOfLines={2}>
-                Incluír contenido para adultos
-              </Text>
-              <Switch
-                value={hasAdultContent}
-                onValueChange={handleChangeAdultContent}
-              />
-            </View>
-          </View>
-          <View>
-            <Text
-              style={[styles.itemText, styles.sectionText]}
-              numberOfLines={2}
-            >
-              Acerca de Reactflix
-            </Text>
-            <TouchableOpacity onPress={handleShare}>
-              <View style={styles.item}>
-                <Text style={styles.itemText} numberOfLines={2}>
-                  ¡Compartí con tus amigos!
-                </Text>
-                <Feather
-                  name="share"
-                  size={22}
-                  color={darkBlue}
-                  style={styles.icon}
+          {isLoading ? (
+            <Spinner style={styles.containerCenter} />
+          ) : isError ? (
+            <ScrollView style={styles.containerScroll}>
+              <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => onReset()} />
+            </ScrollView>
+          ) : (
+            <ScrollView style={styles.containerScroll}>
+              <View style={styles.section}>
+                <Text>Ingresa los datos de tu cuenta</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Usuario"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeUsername(value)}
+                  value={username}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Contraseña"
+                  placeholderTextColor="#828282"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={value => onChangePassword(value)}
+                  value={password}
                 />
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleRating}>
-              <View style={styles.item}>
-                <Text style={styles.itemText} numberOfLines={2}>
-                  Calificar esta app
-                </Text>
-                <Feather
-                  name="star"
-                  size={22}
-                  color={darkBlue}
-                  style={styles.icon}
-                />
+
+              <View style={styles.containerButton}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => handleSubmit()}
+                >
+                  <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                    Confirmar
+                  </Text>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <View style={[styles.item, styles.itemNoBorder]}>
-              <Text style={styles.itemTextVersion} numberOfLines={2}>
-                Versión {Constants.manifest.version}
-              </Text>
-            </View>
-          </View>
+            </ScrollView>
+              )}
         </View>
       </ScrollView>
     </Screen>

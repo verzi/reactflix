@@ -1,89 +1,122 @@
-import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
-// import Constants from 'expo-constants';
-// import { Feather } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, Text, Button, TextInput } from 'react-native';
+import Constants from 'expo-constants';
+import { Feather } from '@expo/vector-icons';
 
-// import { Alert } from '../../components/common/Alert';
-// import { Share } from '../../components/common/Share';
+import { Alert } from '../../components/common/Alert';
+import { Share } from '../../components/common/Share';
 import Screen from '../../components/common/Screen';
-// import { TouchableOpacity } from '../../components/common/TouchableOpacity';
-// import { Switch } from '../../components/common/Switch';
+import { TouchableOpacity } from '../../components/common/TouchableOpacity';
+import { Switch } from '../../components/common/Switch';
 
-// import { getItem, setItem } from '../../utils/asyncStorage';
+import Spinner from '../../components/common/Spinner';
+import NotificationCard from '../../components/cards/NotificationCard';
+import request from '../../services/apiBackend';
 
-// import { darkBlue } from '../../utils/colors';
-
+import SectionRow from '../../components/cards/rows/SectionRow';
 import styles from './styles';
 
+
+import useUser from "../../hooks/useUser";
+
 const UserMovieList = ({ navigation }) => {
-  // const [hasAdultContent, setHasAdultContent] = useState(false);
 
-  //   useEffect(() => {
-  //     (async () => {
-  //       try {
-  //         const adultContentStorage = await getItem(
-  //           '@ConfigKey',
-  //           'hasAdultContent'
-  //         );
-
-  //         setHasAdultContent(adultContentStorage);
-  //       } catch (error) {
-  //         showError();
-  //       }
-  //     })();
-  //   }, [hasAdultContent]);
-
-  //   showError = () => {
-  //     Alert({
-  //       title: 'Atención',
-  //       description:
-  //         'Ups!, ha ocurrido un problema, por favor intenta nuevamente más tarde.'
-  //     });
-  //   };
-
-  //   handleChangeAdultContent = async value => {
-  //     try {
-  //       setHasAdultContent(value);
-  //       await setItem('@ConfigKey', `{"hasAdultContent": ${value}}`);
-  //     } catch (error) {
-  //       showError();
-  //     }
-  //   };
-
-  //   handleShare = () => {
-  //     Share({
-  //       message: 'Más información sobre películas y series \u{1F37F}',
-  //       url: 'https://www.themoviedb.org/',
-  //       title: 'Reactflix',
-  //       dialogTitle: 'Más información sobre películas y series \u{1F37F}'
-  //     });
-  //   };
-
-  //   handleRating = () => {
-  //     Alert({
-  //       title: 'Atención',
-  //       description: '¿Te gustó, no?… mínimo nos merecemos un 10 :)'
-  //     });
-  //   };
 
   const { navigate } = navigation;
+
+  const { user, updateUser } = useUser();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState(false);
+  const [list, setList] = useState([]);
+
+  const fetch = async () => {
+    try {
+      setIsLoading(true);
+      const data = await request(`public-lists`);
+      setIsLoading(false);
+      setIsError(false);
+      if (data.error) {
+        console.log(data)
+        setIsError(true);
+        setError("Los datos ingresados son incorrectos");
+      } else {
+        console.log(data);
+        setList(data);
+      }
+      console.log(user);
+      console.log(data)
+
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+      setIsError(true);
+    }
+  }
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  if (user)
+    return (
+      <Screen>
+        <ScrollView style={styles.bgWhite}>
+          <View style={styles.container}>
+            {isLoading ? (
+              <Spinner style={styles.containerCenter} />
+            ) : isError ? (
+              <ScrollView style={styles.containerScroll}>
+                <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => fetch()} />
+              </ScrollView>
+            ) : (
+              <ScrollView style={styles.containerScroll}>
+                <View style={styles.section}>
+                  <Text>Hola {user.userProfile.firstname}, estos son tus datos.</Text>
+
+                </View>
+              </ScrollView>
+                )
+            }
+          </View>
+        </ScrollView>
+      </Screen>
+    );
 
   return (
     <Screen>
       <ScrollView style={styles.bgWhite}>
-        <View style={styles.container} sarasa={navigate}>
-          <View style={styles.section}>
-            <Text
-              style={[styles.itemText, styles.sectionText]}
-              numberOfLines={2}
-            >
-              Listas de usuarios
-            </Text>
-          </View>
+        <View style={styles.container}>
+          {isLoading ? (
+            <Spinner style={styles.containerCenter} />
+          ) : isError ? (
+            <ScrollView style={styles.containerScroll}>
+              <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error || undefined} onPress={() => fetch()} />
+            </ScrollView>
+          ) : (
+            <ScrollView style={styles.containerScroll}>
+              <View style={styles.section}>
+                <Text>Listas publicas</Text>
+                <ScrollView
+                  style={styles.containerList}
+                >
+                  {list.map((item, key) => (
+                    <TouchableOpacity
+                      key={key}
+                      style={styles.item}
+                      onPress={() => false}
+                    >
+                      <Text style={styles.itemText}>{item.name}</Text>
+                    </TouchableOpacity>
+                      ))}
+                </ScrollView>
+              </View>
+            </ScrollView>
+              )}
         </View>
       </ScrollView>
     </Screen>
-  );
+  )
 };
 
 export default UserMovieList;

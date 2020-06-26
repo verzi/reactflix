@@ -5,15 +5,12 @@ export const ROUTES = {
   SEARCH: 'Search',
   SEARCH_RESULTS: 'SearchResults',
   CONFIGURATION: 'Configuration',
-  USER_MOVIE_LIST: 'UserMovieList',
-  SIGNUP: 'SignUp'
+  USER_MOVIE_LIST: 'UserMovieList'
 };
 
 export const TABS = {
   HOME: 'Películas',
   SEARCH: 'Buscar',
   USER_MOVIE_LIST: 'Listas',
-  USER_PROFILE: 'Perfil',
-  CONFIG: 'Más',
-  SIGNUP: 'Sign Up'
+  USER_PROFILE: 'Perfil'
 };

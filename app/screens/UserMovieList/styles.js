@@ -2,63 +2,73 @@ import { StyleSheet } from 'react-native';
 
 import { fontSizeResponsive } from '../../utils/dimensions';
 
-import { white, lightGray, darkBlue } from '../../utils/colors';
+import { white, darkBlue, blue, lightGray } from '../../utils/colors';
 
 const styles = StyleSheet.create({
-  buttonFilter: {
-    paddingRight: 15,
-    paddingLeft: 20
+  bgWhite: {
+    backgroundColor: white
   },
   container: {
     flex: 1,
     backgroundColor: white,
-    justifyContent: 'center'
+    padding: 20,
+    paddingTop: 25
   },
-  containerList: {
-    justifyContent: 'center',
-    flex: 1
+  section: {
+    marginBottom: 40
   },
-  containerMainText: {
-    paddingVertical: 25,
-    paddingHorizontal: 20
-  },
-  textMain: {
-    fontSize: fontSizeResponsive(3),
+  sectionText: {
+    marginBottom: 15,
     fontWeight: 'bold',
+    fontSize: fontSizeResponsive(3)
+  },
+  item: {
+    backgroundColor: white,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 25,
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: lightGray
+  },
+  itemText: {
+    fontSize: fontSizeResponsive(2.5),
     color: darkBlue,
     width: '80%'
   },
-  buttonGrid: {
-    position: 'absolute',
-    right: 12,
-    top: 18,
-    padding: 8,
+  itemTextVersion: {
+    fontSize: fontSizeResponsive(2.5),
+    color: blue
+  },
+  itemNoBorder: {
+    borderBottomWidth: 0
+  },
+  icon: {
+    marginRight: 5
+  },
+  input: {
+    fontSize: 14,
+    borderColor: "#BDBDBD",
+    borderBottomWidth: 1,
+    paddingBottom: 1.5,
+    marginTop: 25.5
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 100
   },
-  buttonGridActive: {
-    backgroundColor: lightGray
-  },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0
-  },
-  loadingMore: {
-    paddingTop: 20,
-    paddingBottom: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  loadingButton: {
-    padding: 10,
-    width: '50%',
+  buttonClose: {
+    backgroundColor: white,
     borderWidth: 1,
-    borderRadius: 100,
-    borderColor: lightGray
+    borderColor: darkBlue,
+    paddingVertical: 9.1
   },
-  loadingText: {
-    fontSize: fontSizeResponsive(2.1),
-    color: darkBlue,
-    textAlign: 'center'
+  containerButton: {
+    display: 'flex',
+    alignItems: 'flex-end'
   }
 });
 

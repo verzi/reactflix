@@ -45,6 +45,30 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5
+  },
+  input: {
+    fontSize: 14,
+    borderColor: "#BDBDBD",
+    borderBottomWidth: 1,
+    paddingBottom: 1.5,
+    marginTop: 25.5
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 100
+  },
+  buttonClose: {
+    backgroundColor: white,
+    borderWidth: 1,
+    borderColor: darkBlue,
+    paddingVertical: 9.1
+  },
+  containerButton: {
+    display: 'flex',
+    alignItems: 'flex-end'
   }
 });
 

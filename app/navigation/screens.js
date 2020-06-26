@@ -44,7 +44,7 @@ export const ConfigurationScreen = {
   [ROUTES.CONFIGURATION]: {
     screen: Configuration,
     navigationOptions: {
-      title: TABS.CONFIG
+      title: TABS.USER_PROFILE
     }
   }
 };
