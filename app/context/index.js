@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const initialContext = {
   user: false,
-  incidents: false,
   loading: true,
   error: false
 }

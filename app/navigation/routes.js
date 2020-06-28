@@ -7,7 +7,7 @@ export const ROUTES = {
   PROFILE: 'Profile',
   USER_MOVIE_LIST: 'UserMovieList',
   SIGNUP: 'Signup',
-  SIGNIN: 'Signin',
+  SIGNIN: 'Signin'
 };
 
 export const TABS = {

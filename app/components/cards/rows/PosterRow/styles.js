@@ -19,9 +19,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     bottom: -20,
-    right: 15,
+    right: 85,
     borderRadius: width * 0.32,
     backgroundColor: pink,
+    width: width * 0.16,
+    height: width * 0.16,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  
+  comment: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: -20,
+    right: 15,
+    borderRadius: width * 0.32,
+    backgroundColor: "#E6B800",
     width: width * 0.16,
     height: width * 0.16,
     justifyContent: 'center',
@@ -50,6 +63,9 @@ const styles = StyleSheet.create({
   },
   buttonPlay: {
     marginLeft: 5
+  },
+  buttonStar: {
+    marginLeft: 2
   },
   star: {
     marginRight: 5

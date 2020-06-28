@@ -91,53 +91,53 @@ const Profile = ({ navigation }) => {
                 <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => onReset()} />
               </ScrollView>
             ) : (
-                  <ScrollView style={styles.containerScroll}>
-                    <View style={styles.section}>
-                      <Text>Hola {user.userProfile.firstname}, estos son tus datos.</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Nombre"
-                        placeholderTextColor="#828282"
-                        returnKeyType="next"
-                        onChangeText={value => onChangeFirstame(value)}
-                        value={firstname}
-                      />
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Apellido"
-                        placeholderTextColor="#828282"
-                        returnKeyType="done"
-                        onChangeText={value => onChangeLastname(value)}
-                        value={lastname}
-                      />
-                    </View>
+              <ScrollView style={styles.containerScroll}>
+                <View style={styles.section}>
+                  <Text>Hola {user.userProfile.firstname}, estos son tus datos.</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Nombre"
+                    placeholderTextColor="#828282"
+                    returnKeyType="next"
+                    onChangeText={value => onChangeFirstame(value)}
+                    value={firstname}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Apellido"
+                    placeholderTextColor="#828282"
+                    returnKeyType="done"
+                    onChangeText={value => onChangeLastname(value)}
+                    value={lastname}
+                  />
+                </View>
 
-                    <View style={styles.containerButton}>
-                      <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => handleSubmit()}
-                      >
-                        <Text style={[styles.buttonText, styles.buttonTextSave]}>
-                          Actualizar
+                <View style={styles.containerButton}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                      Actualizar
                     </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.section}>
-                      <Text>Salir de la cuenta?</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.section}>
+                  <Text>Salir de la cuenta?</Text>
 
-                      <View style={[styles.containerButton, { alignItems: 'flex-start' }]}>
-                        <TouchableOpacity
-                          style={[styles.button, styles.buttonClose]}
-                          onPress={() => handleLogout()}
-                        >
-                          <Text style={[styles.buttonText, styles.buttonTextSave]}>
-                            Logout
-                    </Text>
-                        </TouchableOpacity>
-                      </View>
+                  <View style={[styles.containerButton, { alignItems: 'flex-start' }]}>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => handleLogout()}
+                    >
+                      <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                        Logout
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
 
-                    </View>
-                  </ScrollView>
+                </View>
+              </ScrollView>
                 )}
           </View>
         </ScrollView>
@@ -157,7 +157,7 @@ const Profile = ({ navigation }) => {
             >
               <Text style={[styles.buttonText, styles.buttonTextSave]}>
                 Ingresar
-                    </Text>
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -170,7 +170,7 @@ const Profile = ({ navigation }) => {
 Profile.navigationOptions = ({ navigation }) => {
   return {
     title: 'Perfil',
-    headerLeft: null,
+    headerLeft: null
   };
 };
 

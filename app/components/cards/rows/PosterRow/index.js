@@ -23,11 +23,12 @@ const PosterRow = ({
   video,
   showImage,
   onPress,
-  navigate
+  navigate,
+  handleComment
 }) => {
+
   handlePlayVideo = () => {
     const { key } = video;
-
     navigate(ROUTES.MOVIE_VIDEO, { key });
   };
 
@@ -48,6 +49,14 @@ const PosterRow = ({
           />
         </TouchableOpacity>
       )}
+      <TouchableOpacity style={styles.comment} onPress={handleComment}>
+        <FontAwesome
+          name="star"
+          size={width * 0.07}
+          color={white}
+          style={styles.buttonStar}
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.containerMainPhotoInfo}
         activeOpacity={images.length ? 0.5 : 1}

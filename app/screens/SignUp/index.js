@@ -94,64 +94,64 @@ const SignUp = ({ navigation }) => {
               <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => onReset()} />
             </ScrollView>
           ) : (
-                <ScrollView style={styles.containerScroll}>
-                  <View style={styles.section}>
-                    <Text>Ingresa los datos de tu nueva cuenta</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Nombre"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeFirstame(value)}
-                      value={firstname}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Apellido"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeLastname(value)}
-                      value={lastname}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Email"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeEmail(value)}
-                      value={email}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Usuario"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeUsername(value)}
-                      value={username}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Contraseña"
-                      placeholderTextColor="#828282"
-                      returnKeyType="done"
-                      textContentType="newPassword"
-                      secureTextEntry
-                      onChangeText={value => onChangePassword(value)}
-                      value={password}
-                    />
-                  </View>
+            <ScrollView style={styles.containerScroll}>
+              <View style={styles.section}>
+                <Text>Ingresa los datos de tu nueva cuenta</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Nombre"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeFirstame(value)}
+                  value={firstname}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Apellido"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeLastname(value)}
+                  value={lastname}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeEmail(value)}
+                  value={email}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Usuario"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeUsername(value)}
+                  value={username}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Contraseña"
+                  placeholderTextColor="#828282"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={value => onChangePassword(value)}
+                  value={password}
+                />
+              </View>
 
-                  <View style={styles.containerButton}>
-                    <TouchableOpacity
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => handleSubmit()}
-                    >
-                      <Text style={[styles.buttonText, styles.buttonTextSave]}>
-                        Confirmar
+              <View style={styles.containerButton}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => handleSubmit()}
+                >
+                  <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                    Confirmar
                   </Text>
-                    </TouchableOpacity>
-                  </View>
-                </ScrollView>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
               )}
         </View>
       </ScrollView>

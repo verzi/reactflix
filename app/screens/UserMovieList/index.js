@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Button, TextInput } from 'react-native';
-import Constants from 'expo-constants';
-import { Feather } from '@expo/vector-icons';
 
-import { Alert } from '../../components/common/Alert';
-import { Share } from '../../components/common/Share';
 import Screen from '../../components/common/Screen';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
 import { Switch } from '../../components/common/Switch';
@@ -76,20 +72,21 @@ const UserMovieList = ({ navigation }) => {
             ) : (
                   <ScrollView style={styles.containerScroll}>
                     <View style={styles.section}>
-                      <Text>Hola {user.userProfile.firstname}, estos son tus listas.</Text>
-                      <ScrollView
-                        style={styles.containerList}
-                      >
-                        {list.map((item, key) => (
-                          <TouchableOpacity
-                            key={key}
-                            style={styles.item}
-                            onPress={() => false}
-                          >
-                            <Text style={styles.itemText}>{item.name}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </ScrollView>
+                      <SectionRow title="Mis Listas">
+                        <ScrollView
+                          style={styles.containerList}
+                        >
+                          {list.map((item, key) => (
+                            <TouchableOpacity
+                              key={key}
+                              style={styles.item}
+                              onPress={() => false}
+                            >
+                              <Text style={styles.itemText}>{item.name}</Text>
+                            </TouchableOpacity>
+                          ))}
+                        </ScrollView>
+                      </SectionRow>
                     </View>
                   </ScrollView>
                 )
@@ -112,20 +109,21 @@ const UserMovieList = ({ navigation }) => {
           ) : (
                 <ScrollView style={styles.containerScroll}>
                   <View style={styles.section}>
-                    <Text>Listas publicas</Text>
-                    <ScrollView
-                      style={styles.containerList}
-                    >
-                      {list.map((item, key) => (
-                        <TouchableOpacity
-                          key={key}
-                          style={styles.item}
-                          onPress={() => false}
-                        >
-                          <Text style={styles.itemText}>{item.name}</Text>
-                        </TouchableOpacity>
-                      ))}
-                    </ScrollView>
+                    <SectionRow title="Listas publicas">
+                      <ScrollView
+                        style={styles.containerList}
+                      >
+                        {list.map((item, key) => (
+                          <TouchableOpacity
+                            key={key}
+                            style={styles.item}
+                            onPress={() => false}
+                          >
+                            <Text style={styles.itemText}>{item.name}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </SectionRow>
                   </View>
                 </ScrollView>
               )}

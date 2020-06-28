@@ -10,13 +10,19 @@ import Spinner from '../../components/common/Spinner';
 import NotificationCard from '../../components/cards/NotificationCard';
 import PosterRow from '../../components/cards/rows/PosterRow';
 import PersonModal from '../../components/modals/PersonModal';
+import CommentModal from '../../components/modals/CommentModal';
 import PersonListRow from '../../components/cards/rows/PersonListRow';
+
+import CommentListRow from '../../components/cards/rows/CommentListRow';
+
+import CommentRow from '../../components/cards/rows/CommentRow';
 import PersonRow from '../../components/cards/rows/PersonRow';
 import SectionRow from '../../components/cards/rows/SectionRow';
 import MainInfoRow from '../../components/cards/rows/MainInfoRow';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
 
 import request from '../../services/api';
+import requestBackend from '../../services/apiBackend';
 
 import { getImageApi } from '../../utils/images';
 import { convertMinsToHrsMins } from '../../utils/time';
@@ -30,6 +36,9 @@ import isoLanguage from '../../data/iso.json';
 
 import { darkBlue } from '../../utils/colors';
 import styles from './styles';
+
+
+import useUser from "../../hooks/useUser";
 
 const UNINFORMED = 'Sin información';
 const INITIAL_INFO = {
@@ -68,9 +77,13 @@ const MovieDetails = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleComment, setIsVisibleComment] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [creditId, setCreditId] = useState(null);
   const [info, setInfo] = useState(INITIAL_INFO);
+
+  
+  const { user, updateUser } = useUser();
 
   useEffect(() => {
     navigation.setParams({ handleShare });
@@ -82,10 +95,13 @@ const MovieDetails = ({ navigation }) => {
       setIsLoading(true);
 
       const { id } = navigation.state.params;
+      console.log("id es " + id)
       const data = await request(`movie/${id}`, {
         include_image_language: 'en,null',
         append_to_response: 'credits,videos,images'
       });
+
+      const dataComments = await requestBackend(`movies/${id}/comments`, {}, 'GET');
 
       setIsLoading(false);
       setIsError(false);
@@ -100,7 +116,8 @@ const MovieDetails = ({ navigation }) => {
         crew: sliceArrayLength(data.credits.crew, 15),
         productionCompanies: sliceArrayLength(data.production_companies, 10),
         images: formatImageUrl(data.images.backdrops),
-        infosDetail: getInfosDetail(data)
+        infosDetail: getInfosDetail(data),
+        comments: dataComments
       });
     } catch (err) {
       setIsLoading(false);
@@ -137,6 +154,17 @@ const MovieDetails = ({ navigation }) => {
     setIsVisible(!isVisible);
   };
 
+
+  let handleVisibleModalComment = () => {
+    if (user)
+      setIsVisibleComment(!isVisibleComment);
+    else
+      Alert({
+        title: 'Aviso',
+        description: 'Debes loguearte para poder comentar'
+      });
+  };
+
   handlePerson = id => {
     setCreditId(id);
     handleVisibleModal();
@@ -162,6 +190,11 @@ const MovieDetails = ({ navigation }) => {
     }
   };
 
+
+  renderCommentItem = (item) => (
+    <CommentRow item={item}/>
+  );
+
   renderItem = (item, type, handleTeamDetail) => (
     <PersonRow item={item} type={type} onTeamDetail={handleTeamDetail} />
   );
@@ -174,6 +207,7 @@ const MovieDetails = ({ navigation }) => {
 
   {
     const {
+      id,
       backdropPath,
       voteAverage,
       video,
@@ -183,6 +217,7 @@ const MovieDetails = ({ navigation }) => {
       cast,
       crew,
       productionCompanies,
+      comments,
       images
     } = info;
     const { navigate } = navigation;
@@ -198,70 +233,84 @@ const MovieDetails = ({ navigation }) => {
               onPress={requestMoviesInfo}
             />
           ) : (
-            <ScrollView>
-              <PosterRow
-                title={title}
-                backdropPath={backdropPath}
-                voteAverage={voteAverage}
-                images={images}
-                video={video}
-                navigate={navigate}
-                showImage={showImage}
-                onPress={handleImage}
-              />
-              <View style={styles.containerMovieInfo}>
-                <MainInfoRow data={infosDetail} />
-                <SectionRow title="Sinópsis">
-                  <ReadMore
-                    numberOfLines={3}
-                    renderTruncatedFooter={handlePress =>
-                      renderReadMoreFooter('Ver más', handlePress)
-                    }
-                    renderRevealedFooter={handlePress =>
-                      renderReadMoreFooter('Ver menos', handlePress)
-                    }
-                  >
-                    <Text style={styles.subTitleInfo}>{overview}</Text>
-                  </ReadMore>
-                </SectionRow>
-                <SectionRow title="Reparto principal">
-                  <PersonListRow
-                    data={cast}
-                    type="character"
-                    keyItem="creditId"
-                    ListEmptyComponent={renderListEmpty}
-                    onTeamDetail={handlePerson}
-                    renderItem={renderItem}
+                <ScrollView>
+                  <PosterRow
+                    title={title}
+                    backdropPath={backdropPath}
+                    voteAverage={voteAverage}
+                    images={images}
+                    video={video}
+                    navigate={navigate}
+                    showImage={showImage}
+                    onPress={handleImage}
+                    handleComment={handleVisibleModalComment}
                   />
-                </SectionRow>
-                <SectionRow title="Equipo técnico principal">
-                  <PersonListRow
-                    data={crew}
-                    type="job"
-                    keyItem="creditId"
-                    ListEmptyComponent={renderListEmpty}
-                    onTeamDetail={handlePerson}
-                    renderItem={renderItem}
-                  />
-                </SectionRow>
-                <SectionRow title="Productora" isLast>
-                  <PersonListRow
-                    data={productionCompanies}
-                    type="production"
-                    keyItem="id"
-                    ListEmptyComponent={renderListEmpty}
-                    onTeamDetail={handlePerson}
-                    renderItem={renderItem}
-                  />
-                </SectionRow>
-              </View>
-            </ScrollView>
-          )}
+                  <View style={styles.containerMovieInfo}>
+                    <MainInfoRow data={infosDetail} />
+                    <SectionRow title="Sinópsis">
+                      <ReadMore
+                        numberOfLines={3}
+                        renderTruncatedFooter={handlePress =>
+                          renderReadMoreFooter('Ver más', handlePress)
+                        }
+                        renderRevealedFooter={handlePress =>
+                          renderReadMoreFooter('Ver menos', handlePress)
+                        }
+                      >
+                        <Text style={styles.subTitleInfo}>{overview}</Text>
+                      </ReadMore>
+                    </SectionRow>
+                    <SectionRow title="Reparto principal">
+                      <PersonListRow
+                        data={cast}
+                        type="character"
+                        keyItem="creditId"
+                        ListEmptyComponent={renderListEmpty}
+                        onTeamDetail={handlePerson}
+                        renderItem={renderItem}
+                      />
+                    </SectionRow>
+                    <SectionRow title="Equipo técnico principal">
+                      <PersonListRow
+                        data={crew}
+                        type="job"
+                        keyItem="creditId"
+                        ListEmptyComponent={renderListEmpty}
+                        onTeamDetail={handlePerson}
+                        renderItem={renderItem}
+                      />
+                    </SectionRow>
+                    <SectionRow title="Productora">
+                      <PersonListRow
+                        data={productionCompanies}
+                        type="production"
+                        keyItem="id"
+                        ListEmptyComponent={renderListEmpty}
+                        onTeamDetail={handlePerson}
+                        renderItem={renderItem}
+                      />
+                    </SectionRow>
+                    <SectionRow title="Comentarios" isLast>
+                      <CommentListRow
+                        data={comments}
+                        ListEmptyComponent={renderListEmpty}
+                        renderItem={renderCommentItem}
+                      />
+                    </SectionRow>
+                  </View>
+                </ScrollView>
+              )}
           <PersonModal
             isVisible={isVisible}
             creditId={creditId}
             style={styles.bottomModal}
             onClose={handleVisibleModal}
+          />
+          <CommentModal
+            isVisible={isVisibleComment}
+            MovieId={id}
+            style={styles.bottomModal}
+            onClose={handleVisibleModalComment}
           />
         </View>
       </Screen>

@@ -19,7 +19,7 @@ export default async function request(url, content = {}, method = "GET", header 
   if (method === "GET") {
     const response = await fetch(`${api}/${url}`, 
     { 
-      method: method, 
+      method, 
       headers: {"Content-type": "application/json","Accept": "application/json", ...header}
     }
   );
@@ -27,7 +27,7 @@ export default async function request(url, content = {}, method = "GET", header 
   } else {
     const response = await fetch(`${api}/${url}`, 
       { 
-        method: method, 
+        method, 
         headers: {"Content-type": "application/json","Accept": "application/json", ...header},
         body: JSON.stringify(content) 
       }

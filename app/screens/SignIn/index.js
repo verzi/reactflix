@@ -82,56 +82,56 @@ const SignIn = ({ navigation }) => {
               <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => onReset()} />
             </ScrollView>
           ) : (
-                <ScrollView style={styles.containerScroll}>
-                  <View style={styles.section}>
-                    <Text>Ingresa los datos de tu cuenta</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Usuario"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeUsername(value)}
-                      value={username}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Contraseña"
-                      placeholderTextColor="#828282"
-                      returnKeyType="done"
-                      textContentType="newPassword"
-                      secureTextEntry
-                      onChangeText={value => onChangePassword(value)}
-                      value={password}
-                    />
-                  </View>
+            <ScrollView style={styles.containerScroll}>
+              <View style={styles.section}>
+                <Text>Ingresa los datos de tu cuenta</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Usuario"
+                  placeholderTextColor="#828282"
+                  returnKeyType="next"
+                  onChangeText={value => onChangeUsername(value)}
+                  value={username}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Contraseña"
+                  placeholderTextColor="#828282"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={value => onChangePassword(value)}
+                  value={password}
+                />
+              </View>
 
-                  <View style={styles.containerButton}>
-                    <TouchableOpacity
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => handleSubmit()}
-                    >
-                      <Text style={[styles.buttonText, styles.buttonTextSave]}>
-                        Confirmar
+              <View style={styles.containerButton}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => handleSubmit()}
+                >
+                  <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                    Confirmar
                   </Text>
-                    </TouchableOpacity>
-                  </View>
+                </TouchableOpacity>
+              </View>
 
-                  <View style={styles.section}>
-                    <Text>Aun sin cuenta?</Text>
+              <View style={styles.section}>
+                <Text>Aun sin cuenta?</Text>
 
-                    <View style={[styles.containerButton, { alignItems: 'flex-start' }]}>
-                      <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => navigate(ROUTES.SIGNUP)}
-                      >
-                        <Text style={[styles.buttonText, styles.buttonTextSave]}>
-                          Registrarse
+                <View style={[styles.containerButton, { alignItems: 'flex-start' }]}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => navigate(ROUTES.SIGNUP)}
+                  >
+                    <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                      Registrarse
                     </Text>
-                      </TouchableOpacity>
-                    </View>
+                  </TouchableOpacity>
+                </View>
 
-                  </View>
-                </ScrollView>
+              </View>
+            </ScrollView>
               )}
         </View>
       </ScrollView>
