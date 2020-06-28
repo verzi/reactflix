@@ -14,16 +14,21 @@ function queryString(obj) {
     .join('&');
 }
 
-export default async function request(url, content = {}, method = "GET") {
+export default async function request(url, content = {}, method = "GET", header = {}) {
   let data = false;
   if (method === "GET") {
-    const response = await fetch(`${api}/${url}?${queryString(content)}`);
+    const response = await fetch(`${api}/${url}`, 
+    { 
+      method: method, 
+      headers: {"Content-type": "application/json","Accept": "application/json", ...header}
+    }
+  );
     data = await response.json();
   } else {
     const response = await fetch(`${api}/${url}`, 
       { 
-        method: 'POST', 
-        headers: {"Content-type": "application/json","Accept": "application/json"},
+        method: method, 
+        headers: {"Content-type": "application/json","Accept": "application/json", ...header},
         body: JSON.stringify(content) 
       }
     );

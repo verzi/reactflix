@@ -9,7 +9,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import {
   MoviesScreen,
   SearchScreen,
-  ConfigurationScreen,
+  UserAccountScreen,
   UserMovieListScreen
 } from './screens';
 import { ROUTES, TABS } from './routes';
@@ -53,8 +53,8 @@ const SearchStack = createStackNavigator(SearchScreen, {
   }
 });
 
-const UserAccountStack = createStackNavigator(ConfigurationScreen, {
-  initialRouteName: ROUTES.CONFIGURATION,
+const UserAccountStack = createStackNavigator(UserAccountScreen, {
+  initialRouteName: ROUTES.PROFILE,
   defaultNavigationOptions,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
@@ -62,6 +62,7 @@ const UserAccountStack = createStackNavigator(ConfigurationScreen, {
     )
   }
 });
+
 
 // const ConfigurationStack = createStackNavigator(ConfigurationScreen, {
 //   initialRouteName: ROUTES.CONFIGURATION,

@@ -1,11 +1,29 @@
 import MovieList from '../screens/MovieList';
-import Configuration from '../screens/Configuration';
+import Profile from '../screens/Profile';
 import MovieDetails from '../screens/MovieDetails';
 import Search from '../screens/Search';
 import MovieVideo from '../screens/MovieVideo';
 import UserMovieList from '../screens/UserMovieList';
 
+import SignUp from '../screens/SignUp';
+import SignIn from '../screens/SignIn';
+
 import { ROUTES, TABS } from './routes';
+
+export const UserAccountScreen = {
+  [ROUTES.PROFILE]: {
+    screen: Profile,
+    navigationOptions: {
+      title: TABS.USER_PROFILE
+    }
+  },
+  [ROUTES.SIGNUP]: {
+    screen: SignUp
+  },
+  [ROUTES.SIGNIN]: {
+    screen: SignIn
+  }
+};
 
 export const MoviesScreen = {
   [ROUTES.MOVIE_LIST]: {
@@ -37,15 +55,6 @@ export const SearchScreen = {
   },
   [ROUTES.MOVIE_VIDEO]: {
     screen: MovieVideo
-  }
-};
-
-export const ConfigurationScreen = {
-  [ROUTES.CONFIGURATION]: {
-    screen: Configuration,
-    navigationOptions: {
-      title: TABS.USER_PROFILE
-    }
   }
 };
 

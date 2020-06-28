@@ -4,8 +4,10 @@ export const ROUTES = {
   MOVIE_VIDEO: 'MovieVideo',
   SEARCH: 'Search',
   SEARCH_RESULTS: 'SearchResults',
-  CONFIGURATION: 'Configuration',
-  USER_MOVIE_LIST: 'UserMovieList'
+  PROFILE: 'Profile',
+  USER_MOVIE_LIST: 'UserMovieList',
+  SIGNUP: 'Signup',
+  SIGNIN: 'Signin',
 };
 
 export const TABS = {

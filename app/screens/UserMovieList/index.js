@@ -34,7 +34,11 @@ const UserMovieList = ({ navigation }) => {
   const fetch = async () => {
     try {
       setIsLoading(true);
-      const data = await request(`public-lists`);
+      let data = false;
+      if (user)
+        data = await request(`users/${user.userProfile.id}/lists`, false, "GET", { "reactflix-access-token": user.token });
+      else
+        data = await request(`public-lists`);
       setIsLoading(false);
       setIsError(false);
       if (data.error) {
@@ -56,7 +60,7 @@ const UserMovieList = ({ navigation }) => {
   }
   useEffect(() => {
     fetch();
-  }, []);
+  }, [user]);
 
   if (user)
     return (
@@ -70,12 +74,24 @@ const UserMovieList = ({ navigation }) => {
                 <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => fetch()} />
               </ScrollView>
             ) : (
-              <ScrollView style={styles.containerScroll}>
-                <View style={styles.section}>
-                  <Text>Hola {user.userProfile.firstname}, estos son tus datos.</Text>
-
-                </View>
-              </ScrollView>
+                  <ScrollView style={styles.containerScroll}>
+                    <View style={styles.section}>
+                      <Text>Hola {user.userProfile.firstname}, estos son tus listas.</Text>
+                      <ScrollView
+                        style={styles.containerList}
+                      >
+                        {list.map((item, key) => (
+                          <TouchableOpacity
+                            key={key}
+                            style={styles.item}
+                            onPress={() => false}
+                          >
+                            <Text style={styles.itemText}>{item.name}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  </ScrollView>
                 )
             }
           </View>
@@ -94,24 +110,24 @@ const UserMovieList = ({ navigation }) => {
               <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error || undefined} onPress={() => fetch()} />
             </ScrollView>
           ) : (
-            <ScrollView style={styles.containerScroll}>
-              <View style={styles.section}>
-                <Text>Listas publicas</Text>
-                <ScrollView
-                  style={styles.containerList}
-                >
-                  {list.map((item, key) => (
-                    <TouchableOpacity
-                      key={key}
-                      style={styles.item}
-                      onPress={() => false}
+                <ScrollView style={styles.containerScroll}>
+                  <View style={styles.section}>
+                    <Text>Listas publicas</Text>
+                    <ScrollView
+                      style={styles.containerList}
                     >
-                      <Text style={styles.itemText}>{item.name}</Text>
-                    </TouchableOpacity>
+                      {list.map((item, key) => (
+                        <TouchableOpacity
+                          key={key}
+                          style={styles.item}
+                          onPress={() => false}
+                        >
+                          <Text style={styles.itemText}>{item.name}</Text>
+                        </TouchableOpacity>
                       ))}
+                    </ScrollView>
+                  </View>
                 </ScrollView>
-              </View>
-            </ScrollView>
               )}
         </View>
       </ScrollView>

@@ -15,15 +15,10 @@ import styles from './styles';
 
 import useUser from "../../hooks/useUser";
 
-
-
-const SignUp = ({ navigation }) => {
+const SignIn = ({ navigation }) => {
   const { navigate } = navigation;
   const { user, updateUser } = useUser();
 
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,15 +26,6 @@ const SignUp = ({ navigation }) => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
 
-  const onChangeFirstame = value => {
-    setFirstname(value);
-  };
-  const onChangeLastname = value => {
-    setLastname(value);
-  };
-  const onChangeEmail = value => {
-    setEmail(value);
-  };
   onChangeUsername = value => {
     setUsername(value);
   };
@@ -59,19 +45,15 @@ const SignUp = ({ navigation }) => {
     if (username && password) {
       try {
         setIsLoading(true);
-        const data = await request(`users`, {
-          firstname,
-          lastname,
-          email,
+        const data = await request(`users/login`, {
           username,
           password
         }, "POST");
         setIsLoading(false);
         setIsError(false);
-        if (data.error || data.errors) {
-         
+        if (data.error) {
           setIsError(true);
-          setError(data.message);
+          setError("Los datos ingresados son incorrectos");
         } else {
           updateUser(data);
           navigate(ROUTES.PROFILE);
@@ -82,6 +64,12 @@ const SignUp = ({ navigation }) => {
       }
     }
   };
+
+  
+  useEffect(() => {
+    if (user) 
+      navigation.replace(ROUTES.PROFILE);
+  }, []);
 
   return (
     <Screen>
@@ -96,31 +84,7 @@ const SignUp = ({ navigation }) => {
           ) : (
                 <ScrollView style={styles.containerScroll}>
                   <View style={styles.section}>
-                    <Text>Ingresa los datos de tu nueva cuenta</Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Nombre"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeFirstame(value)}
-                      value={firstname}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Apellido"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeLastname(value)}
-                      value={lastname}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Email"
-                      placeholderTextColor="#828282"
-                      returnKeyType="next"
-                      onChangeText={value => onChangeEmail(value)}
-                      value={email}
-                    />
+                    <Text>Ingresa los datos de tu cuenta</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Usuario"
@@ -151,6 +115,22 @@ const SignUp = ({ navigation }) => {
                   </Text>
                     </TouchableOpacity>
                   </View>
+
+                  <View style={styles.section}>
+                    <Text>Aun sin cuenta?</Text>
+
+                    <View style={[styles.containerButton, { alignItems: 'flex-start' }]}>
+                      <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => navigate(ROUTES.SIGNUP)}
+                      >
+                        <Text style={[styles.buttonText, styles.buttonTextSave]}>
+                          Registrarse
+                    </Text>
+                      </TouchableOpacity>
+                    </View>
+
+                  </View>
                 </ScrollView>
               )}
         </View>
@@ -159,10 +139,11 @@ const SignUp = ({ navigation }) => {
   );
 }
 
-SignUp.navigationOptions = ({ navigation }) => {
+SignIn.navigationOptions = ({ navigation }) => {
   return {
-    title: 'Registro'
+    title: 'Login',
+    headerLeft: null
   };
 };
 
-export default SignUp;
+export default SignIn;
