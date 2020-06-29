@@ -24,7 +24,9 @@ const PosterRow = ({
   showImage,
   onPress,
   navigate,
-  handleComment
+  handleComment,
+  handleAdd,
+  rating
 }) => {
 
   handlePlayVideo = () => {
@@ -49,6 +51,15 @@ const PosterRow = ({
           />
         </TouchableOpacity>
       )}
+      <TouchableOpacity style={styles.add} onPress={handleAdd}>
+        <FontAwesome
+          name="plus"
+          size={width * 0.07}
+          color={white}
+          style={styles.buttonStar}
+        />
+      </TouchableOpacity>
+      
       <TouchableOpacity style={styles.comment} onPress={handleComment}>
         <FontAwesome
           name="star"
@@ -76,6 +87,7 @@ const PosterRow = ({
                 style={styles.star}
               />
             ))}
+            <Text style={{paddingLeft: 5, fontSize: 20,color: "#fff"}}>{rating? rating.average +' (total '+rating.total+')' : 0}</Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     bottom: -20,
-    right: 85,
+    right: 155,
     borderRadius: width * 0.32,
     backgroundColor: pink,
     width: width * 0.16,
@@ -35,6 +35,19 @@ const styles = StyleSheet.create({
     right: 15,
     borderRadius: width * 0.32,
     backgroundColor: "#E6B800",
+    width: width * 0.16,
+    height: width * 0.16,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  add: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: -20,
+    right: 85,
+    borderRadius: width * 0.32,
+    backgroundColor: "#bbb",
     width: width * 0.16,
     height: width * 0.16,
     justifyContent: 'center',

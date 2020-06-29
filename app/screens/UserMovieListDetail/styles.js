@@ -97,6 +97,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0
   },
+  subTitleInfo: {
+    fontSize: fontSizeResponsive(2.1),
+    color: blue,
+    textAlign: 'center'
+  },
 });
 
 export default styles;

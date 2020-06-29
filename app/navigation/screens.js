@@ -4,6 +4,7 @@ import MovieDetails from '../screens/MovieDetails';
 import Search from '../screens/Search';
 import MovieVideo from '../screens/MovieVideo';
 import UserMovieList from '../screens/UserMovieList';
+import UserMovieListDetail from '../screens/UserMovieListDetail';
 
 import SignUp from '../screens/SignUp';
 import SignIn from '../screens/SignIn';
@@ -63,6 +64,10 @@ export const UserMovieListScreen = {
     screen: UserMovieList,
     navigationOptions: {
       title: TABS.USER_MOVIE_LIST
-    }
+    },
+  },
+  [ROUTES.USER_MOVIE_LIST_DETAIL]: {
+    screen: UserMovieListDetail
   }
+
 };

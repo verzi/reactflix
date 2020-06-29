@@ -50,7 +50,7 @@ const onLongPressMovieCover = () => {
   });
 };
 
-const MovieRow = memo(
+const MovieRowNew = memo(
   ({ numColumns, item, type, isSearch, navigate }) => (
     <>
       {numColumns === 1 ? (
@@ -80,9 +80,6 @@ const MovieRow = memo(
                     {getLanguage(item.original_language)}
                   </Text>
                 </View>
-                <Text numberOfLines={1} style={styles.textSmall}>
-                  { convertTypeWithGenre(item.genre_ids, type, false)}
-                </Text>
               </View>
               <View style={[styles.textRow, styles.containerReview]}>
                 {renderScore(item.vote_average)}
@@ -114,4 +111,4 @@ const MovieRow = memo(
   (prevProps, nextProps) => prevProps.item.id === nextProps.item.id
 );
 
-export default MovieRow;
+export default MovieRowNew;

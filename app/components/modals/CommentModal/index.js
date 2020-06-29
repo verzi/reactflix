@@ -66,9 +66,7 @@ const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
   const onSave = async () => {
 
     try {
-      console.log(MovieId)
       if (MovieId) {
-        console.log(1)
         setIsLoading(true);
         if (!haveId) {
           await request(`comments`,

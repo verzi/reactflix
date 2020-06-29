@@ -37,6 +37,7 @@ import isoLanguage from '../../data/iso.json';
 import { darkBlue } from '../../utils/colors';
 import styles from './styles';
 
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
 import useUser from "../../hooks/useUser";
 
@@ -80,9 +81,17 @@ const MovieDetails = ({ navigation }) => {
   const [isVisibleComment, setIsVisibleComment] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [creditId, setCreditId] = useState(null);
+
+  const [listRaw, setListRaw] = useState([]);
   const [info, setInfo] = useState(INITIAL_INFO);
 
-  
+  const comboList = React.useRef();
+
+  const [dataList, setDataList] = React.useState([]);
+  const [usersListSelected, setUsersListSelected] = React.useState([]);
+
+  const [rating, setRating] = useState(null);
+
   const { user, updateUser } = useUser();
 
   useEffect(() => {
@@ -90,19 +99,29 @@ const MovieDetails = ({ navigation }) => {
     requestMoviesInfo();
   }, []);
 
-  requestMoviesInfo = async () => {
+  const requestMoviesInfo = async () => {
     try {
       setIsLoading(true);
 
       const { id } = navigation.state.params;
-      console.log("id es " + id)
       const data = await request(`movie/${id}`, {
         include_image_language: 'en,null',
         append_to_response: 'credits,videos,images'
       });
 
       const dataComments = await requestBackend(`movies/${id}/comments`, {}, 'GET');
+      const dataRating = await requestBackend(`movies/${id}/reactflix-rating`, {}, 'GET');
+      if (user) {
+        const listdata = await requestBackend(`users/${user.userProfile.id}/owned-lists`, false, "GET", { "reactflix-access-token": user.token });
+        if (listdata.length > 0) {
+          setListRaw(listdata);
+          const user_list = listdata.map(({ _id, name }) => ({ id: _id, name: name }));
+          setDataList(user_list);
+        }
+      }
 
+
+      setRating(dataRating);
       setIsLoading(false);
       setIsError(false);
       setInfo({
@@ -120,13 +139,14 @@ const MovieDetails = ({ navigation }) => {
         comments: dataComments
       });
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       setIsError(true);
     }
   };
 
   /* eslint-disable camelcase */
-  getInfosDetail = ({
+  const getInfosDetail = ({
     runtime = 0,
     genres = '',
     original_language = '',
@@ -145,12 +165,12 @@ const MovieDetails = ({ navigation }) => {
   });
   /* eslint-enable camelcase */
 
-  formatImageUrl = images =>
+  const formatImageUrl = images =>
     sliceArrayLength(images, 15).map(item =>
       getImageApi(item.file_path, 'url', 'original')
     );
 
-  handleVisibleModal = () => {
+  const handleVisibleModal = () => {
     setIsVisible(!isVisible);
   };
 
@@ -165,16 +185,16 @@ const MovieDetails = ({ navigation }) => {
       });
   };
 
-  handlePerson = id => {
+  const handlePerson = id => {
     setCreditId(id);
     handleVisibleModal();
   };
 
-  handleImage = () => {
+  const handleImage = () => {
     setShowImage(!showImage);
   };
 
-  handleShare = (title, id) => {
+  const handleShare = (title, id) => {
     if (isError) {
       Alert({
         title: 'Atención',
@@ -190,16 +210,76 @@ const MovieDetails = ({ navigation }) => {
     }
   };
 
+  const handleVisibleAdd = () => {
+    if (user)
+      comboList.current._toggleSelector()
+    else
+      Alert({
+        title: 'Aviso',
+        description: 'Debes loguearte para poder agregar una pelicula'
+      });
 
-  renderCommentItem = (item) => (
-    <CommentRow item={item}/>
+  }
+
+
+  const onSelectedItemsChange = (selectedItems) => {
+    // onSaveMovieList(selectedItems)
+    setTimeout(() => onSaveMovieList(selectedItems[0]), 500);
+
+  };
+
+  const onSaveMovieList = async (listId) => {
+    const { id } = navigation.state.params || {};
+    if (listId && user) {
+      try {
+        let actualMovies = listRaw.filter(obj => obj._id == listId).map(filteredObj => filteredObj.movies)[0]
+        console.log(actualMovies)
+        let ifExist = actualMovies.filter(obj => obj.movieId == id);
+        if (ifExist.length > 0) {
+          actualMovies = actualMovies.filter(obj => obj.movieId != id);
+        } else {
+          actualMovies.push({ "movieId": id })
+        }
+        const requestListChange = await requestBackend(`lists/${listId}`, { "movies": actualMovies }, 'PUT', { "reactflix-access-token": user.token });
+        if (requestListChange) {
+          if (ifExist.length > 0) {
+            Alert({
+              title: 'Aviso',
+              description: 'Pelicula eliminada de la lista'
+            });
+          } else {
+            Alert({
+              title: 'Aviso',
+              description: 'Pelicula agregada a la lista'
+            });
+          }
+        } else {
+          Alert({
+            title: 'Aviso',
+            description: 'No se pudo agregar la pelicula a la lista'
+          });
+        }
+      } catch (err) {
+        console.log(err)
+        Alert({
+          title: 'Aviso',
+          description: 'No se pudo agregar la pelicula a la lista'
+        });
+      }
+    }
+  }
+
+
+
+  const renderCommentItem = (item) => (
+    <CommentRow item={item} />
   );
 
-  renderItem = (item, type, handleTeamDetail) => (
+  const renderItem = (item, type, handleTeamDetail) => (
     <PersonRow item={item} type={type} onTeamDetail={handleTeamDetail} />
   );
 
-  renderListEmpty = () => (
+  const renderListEmpty = () => (
     <View>
       <Text style={styles.subTitleInfo}>Sin información</Text>
     </View>
@@ -244,6 +324,8 @@ const MovieDetails = ({ navigation }) => {
                     showImage={showImage}
                     onPress={handleImage}
                     handleComment={handleVisibleModalComment}
+                    handleAdd={handleVisibleAdd}
+                    rating={rating}
                   />
                   <View style={styles.containerMovieInfo}>
                     <MainInfoRow data={infosDetail} />
@@ -312,6 +394,26 @@ const MovieDetails = ({ navigation }) => {
             style={styles.bottomModal}
             onClose={handleVisibleModalComment}
           />
+
+          <SectionedMultiSelect
+            hideSelect={true}
+            single={true}
+            items={dataList}
+            ref={comboList}
+            uniqueKey="id"
+            subKey="children"
+            expandDropDowns={true}
+            confirmText="Confirmar"
+            searchPlaceholderText="Buscar lista"
+            selectedText="seleccionados"
+            showCancelButton={true}
+            modalWithSafeAreaView={true}
+            onSelectedItemsChange={onSelectedItemsChange}
+            selectedItems={usersListSelected}
+            readOnlyHeadings={false}
+          />
+
+
         </View>
       </Screen>
     );

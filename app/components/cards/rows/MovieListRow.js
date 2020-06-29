@@ -13,7 +13,8 @@ const MovieListRow = ({
   ListEmptyComponent,
   navigate,
   renderItem
-}) => (
+}) => {
+  return(
   <FlatList
     data={data}
     key={keyGrid}
@@ -29,5 +30,5 @@ const MovieListRow = ({
     }
   />
 );
-
+  }
 export default MovieListRow;

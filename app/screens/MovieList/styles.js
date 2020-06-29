@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     right: 12,
     top: 18,
     padding: 8,
-    borderRadius: 100
   },
   buttonGridActive: {
     backgroundColor: lightGray

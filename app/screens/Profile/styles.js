@@ -69,7 +69,17 @@ const styles = StyleSheet.create({
   containerButton: {
     display: 'flex',
     alignItems: 'flex-end'
-  }
+  },
+  titleInfo: {
+    fontSize: fontSizeResponsive(2.4),
+    fontWeight: 'bold',
+    color: darkBlue,
+    marginBottom: 7
+  },
+  
+  containerSection: {
+    marginBottom: 25
+  },
 });
 
 export default styles;

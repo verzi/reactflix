@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Button, TextInput } from 'react-native';
+import { ScrollView, View, Text, Button, FlatList } from 'react-native';
 
 import Screen from '../../components/common/Screen';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
 import { Switch } from '../../components/common/Switch';
-
+import ListModal from '../../components/modals/ListModal';
+import { Entypo } from '@expo/vector-icons';
+import { Alert } from '../../components/common/Alert';
 import Spinner from '../../components/common/Spinner';
 import NotificationCard from '../../components/cards/NotificationCard';
 import request from '../../services/apiBackend';
@@ -12,8 +14,10 @@ import request from '../../services/apiBackend';
 import SectionRow from '../../components/cards/rows/SectionRow';
 import styles from './styles';
 
+import { darkBlue } from '../../utils/colors';
 
 import useUser from "../../hooks/useUser";
+import { ROUTES } from '../../navigation/routes';
 
 const UserMovieList = ({ navigation }) => {
 
@@ -27,9 +31,15 @@ const UserMovieList = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [list, setList] = useState([]);
 
+
+  const [isRefresh, setIsRefresh] = useState(false);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [id, setId] = useState(false);
+
   const fetch = async () => {
     try {
-      setIsLoading(true);
       let data = false;
       if (user)
         data = await request(`users/${user.userProfile.id}/lists`, false, "GET", { "reactflix-access-token": user.token });
@@ -38,15 +48,11 @@ const UserMovieList = ({ navigation }) => {
       setIsLoading(false);
       setIsError(false);
       if (data.error) {
-        console.log(data)
         setIsError(true);
         setError("Los datos ingresados son incorrectos");
       } else {
-        console.log(data);
         setList(data);
       }
-      console.log(user);
-      console.log(data)
 
     } catch (err) {
       console.log(err);
@@ -54,83 +60,90 @@ const UserMovieList = ({ navigation }) => {
       setIsError(true);
     }
   }
+
+  const handleVisibleModal = () => {
+    setIsVisible(!isVisible);
+  };
+
+  const handleNewList = () => {
+    if (user)
+      setIsVisible(!isVisible);
+    else
+      Alert({
+        title: 'Aviso',
+        description: 'Necesitas ingresar para crear una lista'
+      });
+  }
   useEffect(() => {
+    setIsLoading(true);
     fetch();
   }, [user]);
 
-  if (user)
-    return (
-      <Screen>
-        <ScrollView style={styles.bgWhite}>
-          <View style={styles.container}>
-            {isLoading ? (
-              <Spinner style={styles.containerCenter} />
-            ) : isError ? (
-              <ScrollView style={styles.containerScroll}>
-                <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => fetch()} />
-              </ScrollView>
-            ) : (
-                  <ScrollView style={styles.containerScroll}>
-                    <View style={styles.section}>
-                      <SectionRow title="Mis Listas">
-                        <ScrollView
-                          style={styles.containerList}
-                        >
-                          {list.map((item, key) => (
-                            <TouchableOpacity
-                              key={key}
-                              style={styles.item}
-                              onPress={() => false}
-                            >
-                              <Text style={styles.itemText}>{item.name}</Text>
-                            </TouchableOpacity>
-                          ))}
-                        </ScrollView>
-                      </SectionRow>
-                    </View>
-                  </ScrollView>
-                )
-            }
-          </View>
-        </ScrollView>
-      </Screen>
-    );
+  handleRefresh = async () => {
+    await setIsRefresh(true);
+    await fetch();
+    await setIsRefresh(false);
+  };
+
 
   return (
     <Screen>
-      <ScrollView style={styles.bgWhite}>
-        <View style={styles.container}>
-          {isLoading ? (
-            <Spinner style={styles.containerCenter} />
-          ) : isError ? (
-            <ScrollView style={styles.containerScroll}>
-              <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error || undefined} onPress={() => fetch()} />
-            </ScrollView>
-          ) : (
-                <ScrollView style={styles.containerScroll}>
-                  <View style={styles.section}>
-                    <SectionRow title="Listas publicas">
-                      <ScrollView
-                        style={styles.containerList}
-                      >
-                        {list.map((item, key) => (
-                          <TouchableOpacity
-                            key={key}
-                            style={styles.item}
-                            onPress={() => false}
-                          >
-                            <Text style={styles.itemText}>{item.name}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </ScrollView>
-                    </SectionRow>
+      <View style={styles.container}>
+        {isLoading ? (
+          <Spinner style={styles.containerCenter} />
+        ) : isError ? (
+          <ScrollView style={styles.containerScroll}>
+            <NotificationCard icon="alert-octagon" textButton="Reintentar" textError={error} onPress={() => fetch()} />
+          </ScrollView>
+        ) : (
+              <View style={styles.containerList}>
+                {list.length > 0 && (
+                  <View style={styles.containerMainText}>
+                    <Text style={styles.textMain} numberOfLines={1}>
+                      {user ? "Mis listas" : "Listas publicas"}
+                    </Text>
+                    <TouchableOpacity
+                      style={[
+                        styles.buttonGrid
+                      ]}
+                      onPress={handleNewList}
+                    >
+                      <Entypo name="new-message" size={22} color={darkBlue} />
+                    </TouchableOpacity>
                   </View>
-                </ScrollView>
-              )}
-        </View>
-      </ScrollView>
+                )}
+                <FlatList
+                  data={list}
+                  keyExtractor={item => item._id.toString()}
+                  refreshing={isRefresh}
+                  onRefresh={handleRefresh}
+                  renderItem={({ item, key }) =>
+                    <TouchableOpacity
+                      key={key}
+                      style={styles.item}
+                      onPress={() => navigation.navigate(ROUTES.USER_MOVIE_LIST_DETAIL, { listId: item._id })}
+                    >
+                      <Text style={styles.itemText}>{item.name}</Text>
+                    </TouchableOpacity>
+                  }
+                />
+
+
+              </View>
+
+
+            )
+        }
+
+        <ListModal
+          isVisible={isVisible}
+          ListId={id}
+          style={styles.bottomModal}
+          onClose={handleVisibleModal}
+        />
+      </View>
     </Screen>
-  )
+  );
 };
 
 export default UserMovieList;

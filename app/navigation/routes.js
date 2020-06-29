@@ -6,6 +6,7 @@ export const ROUTES = {
   SEARCH_RESULTS: 'SearchResults',
   PROFILE: 'Profile',
   USER_MOVIE_LIST: 'UserMovieList',
+  USER_MOVIE_LIST_DETAIL: 'UserMovieListDetail',
   SIGNUP: 'Signup',
   SIGNIN: 'Signin'
 };

@@ -69,7 +69,7 @@ const SignIn = ({ navigation }) => {
   useEffect(() => {
     if (user) 
       navigation.replace(ROUTES.PROFILE);
-  }, []);
+  }, [navigation]);
 
   return (
     <Screen>
