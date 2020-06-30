@@ -106,6 +106,7 @@ const Profile = ({ navigation }) => {
 
 
   useEffect(() => {
+    console.log("vuelvo a entrar")
     if (!user)
       navigation.replace(ROUTES.SIGNIN);
     else {

@@ -59,6 +59,8 @@ const SignIn = ({ navigation }) => {
           navigate(ROUTES.PROFILE);
         }
       } catch (err) {
+        console.log("fallo login")
+        console.log(err)
         setIsLoading(false);
         setIsError(true);
       }
@@ -67,6 +69,8 @@ const SignIn = ({ navigation }) => {
 
   
   useEffect(() => {
+    console.log("voy a login")
+    console.log(user)
     if (user) 
       navigation.replace(ROUTES.PROFILE);
   }, []);
