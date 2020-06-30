@@ -70,6 +70,8 @@ const ListModal = ({ isVisible, ListId, style, onClose }) => {
       }
 
     } catch (err) {
+      console.log("Se produjo error en fetch usuario")
+      console.log(err)
       setIsLoading(false);
       setIsError(true);
     }
