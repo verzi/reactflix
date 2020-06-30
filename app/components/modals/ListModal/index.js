@@ -30,7 +30,7 @@ const Filter = ({ title, type, selected, onChange }) => (
   </View>
 );
 
-const ListModal = ({ isVisible, ListId, style, onClose }) => {
+const ListModal = ({ isVisible, ListId, style, onClose, onFetch, onAlert }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [haveId, setHaveId] = useState(false);
@@ -88,14 +88,13 @@ const ListModal = ({ isVisible, ListId, style, onClose }) => {
             "authorizedUsers": usersListSelected.map(val => ({ user: val.toString() }))
           }, "POST", { "reactflix-access-token": user.token })
 
-        Alert({
-          title: 'Aviso',
-          description: 'Lista agregada con exito'
-        });
 
+        setTimeout(() => onAlert(), 500);
+
+        onReset();
         setIsLoading(false);
         setIsError(false);
-
+        onFetch();
         onClose();
 
       } catch (err) {
@@ -118,6 +117,9 @@ const ListModal = ({ isVisible, ListId, style, onClose }) => {
   const onReset = () => {
     setIsLoading('');
     setIsError('');
+    setVisible(false);
+    setNameList(null);
+    setUsersListSelected([]);
   };
 
   return (

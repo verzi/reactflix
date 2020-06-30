@@ -41,6 +41,7 @@ const UserMovieList = ({ navigation }) => {
   const fetch = async () => {
     try {
       let data = false;
+      setIsLoading(true);
       if (user)
         data = await request(`users/${user.userProfile.id}/lists`, false, "GET", { "reactflix-access-token": user.token });
       else
@@ -74,6 +75,7 @@ const UserMovieList = ({ navigation }) => {
         description: 'Necesitas ingresar para crear una lista'
       });
   }
+
   useEffect(() => {
     setIsLoading(true);
     fetch();
@@ -84,6 +86,14 @@ const UserMovieList = ({ navigation }) => {
     await fetch();
     await setIsRefresh(false);
   };
+
+  const onAlert = () => {
+    Alert({
+      title: 'Aviso',
+      description: 'Lista agregada con exito'
+    });
+
+  }
 
 
   return (
@@ -139,7 +149,9 @@ const UserMovieList = ({ navigation }) => {
           isVisible={isVisible}
           ListId={id}
           style={styles.bottomModal}
+          onFetch={fetch}
           onClose={handleVisibleModal}
+          onAlert={onAlert}
         />
       </View>
     </Screen>

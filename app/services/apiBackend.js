@@ -1,4 +1,4 @@
-const api = 'http://192.168.0.94:8080/mri-api';
+const api = 'https://apps-distribuidas.herokuapp.com/mri-api';
 
 // Esta api key la expongo dado que es gratuita y sólo para caso de estudio. Lo correcto es almacenarla en un archivo .env
 const key = '558182696c08d8f1f28fa0965916da2e';
