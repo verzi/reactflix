@@ -27,7 +27,6 @@ const SignIn = ({ navigation }) => {
   const [error, setError] = useState(false);
 
   const onChangeUsername = value => {
-    console.log(value)
     setUsername(value);
   };
 
