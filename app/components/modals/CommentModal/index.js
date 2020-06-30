@@ -138,7 +138,7 @@ const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
                     <Picker
                       mode="disalog"
                       selectedValue={rating}
-                      style={{ height: 10, width: 150 }}
+                      style={{ height: 30, width: 150 }}
                       onValueChange={(itemValue, itemIndex) => setRating(itemValue)}
                     >
                       <Picker.Item label="1" value="1" />

@@ -95,6 +95,11 @@ const UserMovieList = ({ navigation }) => {
 
   }
 
+  const renderListEmpty = () => (
+    <View>
+      <Text style={{textAlign: "center"}}>Sin listas</Text>
+    </View>
+  );
 
   return (
     <Screen>
@@ -107,7 +112,6 @@ const UserMovieList = ({ navigation }) => {
           </ScrollView>
         ) : (
               <View style={styles.containerList}>
-                {list.length > 0 && (
                   <View style={styles.containerMainText}>
                     <Text style={styles.textMain} numberOfLines={1}>
                       {user ? "Mis listas" : "Listas publicas"}
@@ -121,12 +125,12 @@ const UserMovieList = ({ navigation }) => {
                       <Entypo name="new-message" size={22} color={darkBlue} />
                     </TouchableOpacity>
                   </View>
-                )}
                 <FlatList
                   data={list}
                   keyExtractor={item => item._id.toString()}
                   refreshing={isRefresh}
                   onRefresh={handleRefresh}
+                  ListEmptyComponent={renderListEmpty}
                   renderItem={({ item, key }) =>
                     <TouchableOpacity
                       key={key}

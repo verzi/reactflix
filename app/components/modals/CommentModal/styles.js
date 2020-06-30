@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    height: height * 0.7
+    height: 350
   },
   containerScroll: {
     padding: 22,

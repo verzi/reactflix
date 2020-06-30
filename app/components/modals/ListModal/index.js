@@ -18,14 +18,14 @@ import useUser from "../../../hooks/useUser";
 
 const UNINFORMED = 'Sin información';
 
-const Filter = ({ title, type, selected, onChange }) => (
+const Filter = ({ title, selected, onChange }) => (
   <View style={styles.containerRow}>
     <Text style={styles.optionTitle} numberOfLines={2}>
       {title}
     </Text>
     <Switch
-      value={type === selected}
-      onValueChange={() => onChange(type)}
+      value={selected}
+      onValueChange={() => onChange(!selected)}
     />
   </View>
 );
@@ -67,6 +67,9 @@ const ListModal = ({ isVisible, ListId, style, onClose, onFetch, onAlert }) => {
             // these are the children or 'sub items'
             children: user_list
           }]);
+      } else {
+        console.log("no retorno users");
+        console.log(data);
       }
 
     } catch (err) {
@@ -155,7 +158,6 @@ const ListModal = ({ isVisible, ListId, style, onClose, onFetch, onAlert }) => {
                   </Text>
                   <Filter
                     title="Es publico"
-                    type={true}
                     selected={isVisibleList}
                     onChange={setVisible}
                   />
