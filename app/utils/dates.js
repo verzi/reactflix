@@ -35,14 +35,14 @@ export const timeDifference = (current, previous) => {
   }
 
   else if (elapsed < msPerMonth) {
-      return 'approximately ' + Math.round(elapsed/msPerDay) + ' dias';   
+      return 'aproximadamente ' + Math.round(elapsed/msPerDay) + ' dias';   
   }
 
   else if (elapsed < msPerYear) {
-      return 'approximately ' + Math.round(elapsed/msPerMonth) + ' meses';   
+      return 'aproximadamente ' + Math.round(elapsed/msPerMonth) + ' meses';   
   }
 
   else {
-      return 'approximately ' + Math.round(elapsed/msPerYear ) + ' años';   
+      return 'aproximadamente ' + Math.round(elapsed/msPerYear ) + ' años';   
   }
 }

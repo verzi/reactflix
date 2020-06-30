@@ -91,6 +91,7 @@ const MovieDetails = ({ navigation }) => {
   const [usersListSelected, setUsersListSelected] = React.useState([]);
 
   const [rating, setRating] = useState(null);
+  const [comments, setComments] = useState([]);
 
   const { user, updateUser } = useUser();
 
@@ -99,6 +100,22 @@ const MovieDetails = ({ navigation }) => {
     requestMoviesInfo();
   }, []);
 
+  const requestRatingComment = async () => {
+    const { id } = navigation.state.params;
+    const dataComments = await requestBackend(`movies/${id}/comments`, {}, 'GET');
+    const dataRating = await requestBackend(`movies/${id}/reactflix-rating`, {}, 'GET');
+    if (user) {
+      const listdata = await requestBackend(`users/${user.userProfile.id}/owned-lists`, false, "GET", { "reactflix-access-token": user.token });
+      if (listdata.length > 0) {
+        setListRaw(listdata);
+        const user_list = listdata.map(({ _id, name }) => ({ id: _id, name: name }));
+        setDataList(user_list);
+      }
+    }
+    console.log(dataComments)
+    setComments(dataComments);
+    setRating(dataRating);
+  }
   const requestMoviesInfo = async () => {
     try {
       setIsLoading(true);
@@ -108,20 +125,8 @@ const MovieDetails = ({ navigation }) => {
         include_image_language: 'en,null',
         append_to_response: 'credits,videos,images'
       });
-
-      const dataComments = await requestBackend(`movies/${id}/comments`, {}, 'GET');
-      const dataRating = await requestBackend(`movies/${id}/reactflix-rating`, {}, 'GET');
-      if (user) {
-        const listdata = await requestBackend(`users/${user.userProfile.id}/owned-lists`, false, "GET", { "reactflix-access-token": user.token });
-        if (listdata.length > 0) {
-          setListRaw(listdata);
-          const user_list = listdata.map(({ _id, name }) => ({ id: _id, name: name }));
-          setDataList(user_list);
-        }
-      }
-
-
-      setRating(dataRating);
+      await requestRatingComment();
+    
       setIsLoading(false);
       setIsError(false);
       setInfo({
@@ -135,8 +140,7 @@ const MovieDetails = ({ navigation }) => {
         crew: sliceArrayLength(data.credits.crew, 15),
         productionCompanies: sliceArrayLength(data.production_companies, 10),
         images: formatImageUrl(data.images.backdrops),
-        infosDetail: getInfosDetail(data),
-        comments: dataComments
+        infosDetail: getInfosDetail(data)
       });
     } catch (err) {
       console.log(err)
@@ -297,7 +301,6 @@ const MovieDetails = ({ navigation }) => {
       cast,
       crew,
       productionCompanies,
-      comments,
       images
     } = info;
     const { navigate } = navigation;
@@ -391,6 +394,7 @@ const MovieDetails = ({ navigation }) => {
           <CommentModal
             isVisible={isVisibleComment}
             MovieId={id}
+            onRequestRatingComment={requestRatingComment}
             style={styles.bottomModal}
             onClose={handleVisibleModalComment}
           />

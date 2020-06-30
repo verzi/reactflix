@@ -25,7 +25,7 @@ const TextArea = (props) => (
   />
 );
 
-const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
+const CommentModal = ({ isVisible, MovieId, style, onClose, onRequestRatingComment }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [haveId, setHaveId] = useState(false);
@@ -68,8 +68,9 @@ const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
     try {
       if (MovieId) {
         setIsLoading(true);
+        let req = false;
         if (!haveId) {
-          await request(`comments`,
+          req = await request(`comments`,
             {
               "movieId": MovieId,
               "comment": comment,
@@ -83,7 +84,7 @@ const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
             });
 
         } else {
-          await request(`comments/${haveId}`,
+          req = await request(`comments/${haveId}`,
             {
               "comment": comment,
               "rating": rating
@@ -94,7 +95,8 @@ const CommentModal = ({ isVisible, MovieId, style, onClose }) => {
               description: 'Comentario actualizado con exito'
             });
         }
-
+        console.log(req)
+        onRequestRatingComment();
         setIsLoading(false);
         setIsError(false);
 
