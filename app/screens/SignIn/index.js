@@ -26,11 +26,12 @@ const SignIn = ({ navigation }) => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
 
-  onChangeUsername = value => {
+  const onChangeUsername = value => {
+    console.log(value)
     setUsername(value);
   };
 
-  onChangePassword = value => {
+  const onChangePassword = value => {
     setPassword(value);
   };
 
@@ -69,7 +70,7 @@ const SignIn = ({ navigation }) => {
   useEffect(() => {
     if (user) 
       navigation.replace(ROUTES.PROFILE);
-  }, [navigation]);
+  }, []);
 
   return (
     <Screen>
